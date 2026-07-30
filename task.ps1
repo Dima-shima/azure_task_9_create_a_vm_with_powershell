@@ -9,12 +9,12 @@ $publicIpAddressName = "linuxboxpip"
 $sshKeyName = "linuxboxsshkey"
 $sshKeyPublicKey = Get-Content "~/.ssh/id_rsa.pub"
 $vmName = "matebox"
-# $vmImage = "Ubuntu2204"
+$vmImage = "Ubuntu2204"
 $vmSize = "Standard_B1s"
 $cred = Get-Credential
-$vmPublisher = "Canonical"
-$vmOffer = "0001-com-ubuntu-server-jammy"
-$vmSku = "22_04-lts-gen2"
+# $vmPublisher = "Canonical"
+# $vmOffer = "0001-com-ubuntu-server-jammy"
+# $vmSku = "22_04-lts-gen2"
 $dnsLabel = "matebox-$((Get-Random))"
 
 Write-Host "Creating a resource group $resourceGroupName ..."
@@ -33,6 +33,7 @@ New-AzSshKey -ResourceGroupName $resourceGroupName -Name $sshKeyName -PublicKey 
 
 $vmConfig = New-AzVMConfig -VMName $vmName -VMSize $vmSize
 $vmConfig = Set-AzVMOperatingSystem -VM $vmConfig -Linux -ComputerName $vmName -Credential $cred
-$vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName $vmPublisher -Offer $vmOffer -Skus $vmSku -Version "latest"
+# $vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName $vmPublisher -Offer $vmOffer -Skus $vmSku -Version "latest"
 $vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
-New-AzVM -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig -SshKeyName $sshKeyName
+# New-AzVM -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig -SshKeyName $sshKeyName
+New-AzVM -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig -Image "Ubuntu2204" -SshKeyName $sshKeyName
